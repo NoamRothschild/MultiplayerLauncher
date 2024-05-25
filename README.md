@@ -39,3 +39,11 @@ Unfortunately, you will need to do 1 more step that cannot be automated.
 - You can now exit the menu & open up the server from the Launcher. the server must be up & running at all times when playing.
   
 # Have fun!
+
+
+## Images of the GUI's menus:
+![install-menu](https://github.com/NoamRothschild/MultiplayerLauncher/assets/98104540/b6c741fb-aebc-4dbb-8d7c-1c8fe1764ecc)
+![sprites-menu](https://github.com/NoamRothschild/MultiplayerLauncher/assets/98104540/14cbcfea-1e7a-4251-9f6b-32d173564390)
+![settings-menu](https://github.com/NoamRothschild/MultiplayerLauncher/assets/98104540/3ef02852-6916-4c27-9b9d-62d82f5dfdd0)
+
+
