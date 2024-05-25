@@ -40,7 +40,7 @@ Unfortunately, you will need to do 1 more step that cannot be automated.
 ## We are done!
 ### **All of the following steps must be repeated on each gaming session, including the last ones:**
 - all you need to do right now is start up the game. this may take some time on your first launch.
-- After the game was opened and a save was entered, go inside the game settings, make sure DEBUG is set to true in case any errors occur, and set your player number
+- After the game was opened and a save was entered, go inside the game settings and set your player number
 - **The player MUST be different on each player, 1 player is num1 and the other is num2, not doing so will cause the program to not work**
 - You can now exit the menu & open up the server from the Launcher. the server must be up & running at all times when playing.
   
