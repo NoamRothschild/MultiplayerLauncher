@@ -9,3 +9,4 @@ echo Current directory: %CD%
 
 echo Done Installing Project!
 pause
+exit

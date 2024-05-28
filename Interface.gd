@@ -3,6 +3,7 @@ extends Control
 #FIXME: SWITCH THOSE # LINES WHEN SWITCHING BETWEEN DEVELOPING & EXPORTING
 var project_dir = OS.get_executable_path().get_base_dir()
 #var project_dir = "PATH/TO/PROJECT/builds"
+#var project_dir = "D:/Program-Files/InfusionCopies/MultiplayerProject/MultiplayerLauncher/builds"
 
 var MenuOpen: bool = false
 var InstallMenuOpen: bool = false
@@ -14,8 +15,6 @@ var IsPythonInstalled: bool = false
 
 
 # File paths
-var runfile: String = project_dir.path_join("scripts/runfile.py")
-var startfile: String = project_dir.path_join("scripts/startfile.bat")
 var pythonInstalled: String = project_dir.path_join("scripts/PythonInstalled.bat")
 var redisInstalled: String = project_dir.path_join("scripts/RedisInstalled.py")
 var configFile: String = project_dir.path_join("scripts/config.txt")
@@ -35,11 +34,29 @@ var graphics_path: String = project_dir.path_join("infinitefusion-multiplayer/Gr
 var redis_host: String
 var redis_port: String
 var redis_pw: String
+
+var installType: String
+
 #var game_path #TODO: Fetch from config
+
+func _physics_process(delta):
+	pass
+
+func _ready():
+	PythonInstalledConfig()
+
+
+func OpenGame():
+	OS.execute("cmd.exe", ["/C", game_path])
+	
+func OpenServer():
+	OS.execute("cmd.exe", ["/C", "start", "python", database_path])
 
 func _on_launch_game_pressed():
 	if FileAccess.file_exists(game_path):
-		openFile(game_path)
+		var GameThread: Thread = Thread.new()
+		print("Opening game...")
+		GameThread.start(OpenGame)
 	else:
 		if (MenuOpen and !InstallMenuOpen) or !MenuOpen:
 			FileDoesNotExistNote()
@@ -49,7 +66,9 @@ func _on_launch_game_pressed():
 	
 func _on_start_server_pressed():
 	if FileAccess.file_exists(database_path):
-		openFile(database_path)
+		var ServerThread: Thread = Thread.new()
+		print("Opening server...")
+		ServerThread.start(OpenServer)
 	else:
 		if (MenuOpen and !InstallMenuOpen) or !MenuOpen:
 			FileDoesNotExistNote()
@@ -58,6 +77,7 @@ func _on_start_server_pressed():
 			FileDoesNotExistNote()
 
 func PythonInstalledConfig():
+	#print("Checking if python is installed...")
 	var exit_code = OS.execute("cmd.exe", ["/C", pythonInstalled])
 	#print("Exit code:", exit_code)
 	if exit_code == 1:
@@ -78,37 +98,24 @@ func PythonInstalledConfig():
 		return false
 
 func RedisInstalledConfig():
-	var exit_code = OS.execute("cmd.exe", ["/C", "start", "/min", "python", redisInstalled])
-	if exit_code == 1:
-		print("Redis is not installed")
-		$InstallMenu/InstallRedis/TextureRect.texture = load("res://Images/icons8-exit-96.png")
-		IsPythonInstalled = false
-		return false
-	elif exit_code == 0:
+	OS.execute("cmd.exe", ["/C", "start", "/min", "python", redisInstalled])
+	
+	var config_data = FileAccess.open(configFile, FileAccess.READ).get_as_text()
+	if "redis: true" in config_data:
 		print("Redis is installed")
 		$InstallMenu/InstallRedis/TextureRect.texture = load("res://Images/icons8-tick-box-48.png")
 		IsPythonInstalled = true
 		return true
-	else:
-		print("There was an error fetching exit code from redis_check. exit code: ", exit_code)
+	elif "redis: false" in config_data:
+		print("Redis is not installed")
 		$InstallMenu/InstallRedis/TextureRect.texture = load("res://Images/icons8-exit-96.png")
 		IsPythonInstalled = false
 		return false
-
-func _ready():
-	print("runfile directory: ", runfile)
-	print("database_path: ", database_path)
-	
-	#$MainButtons/VBoxContainer/Wiki.text = runfile
-	if !PythonInstalledConfig():
-		DownloadPythonNote()
-
-	#IsPythonInstalled = openFile(pythonInstalled)
-	#print(IsPythonInstalled)
-
-
-func DownloadGame():
-	pass
+	else:
+		print("There was an error fetching config for RedisInstalled.")
+		$InstallMenu/InstallRedis/TextureRect.texture = load("res://Images/icons8-exit-96.png")
+		IsPythonInstalled = false
+		return false
 
 func DownloadPythonNote():
 	$MessageNote/MessageName.text = "Python required for this step"
@@ -123,24 +130,6 @@ func FileDoesNotExistNote():
 	$MessageNote.visible = true
 	MenuOpen = true
 	MessageMenuOpen = true
-	
-
-func openFile(script_path):
-	if !IsPythonInstalled:
-		if MenuOpen and !MessageMenuOpen:
-			_on_install_menu_pressed()
-		DownloadPythonNote()
-		print("Unable to open file, python is not installed.")
-		return false
-	#var script_path: String = 
-	var exit_code = OS.execute("cmd.exe", ["/C", "start", "/min", "python", runfile , script_path])
-	if exit_code == OK:
-		print("Script ran successfully in new terminal")
-		return true
-	else:
-		print("Failed to run script")
-		print("Exit code: ", exit_code)
-		return false
 
 func _on_wiki_pressed():
 	OS.shell_open("https://github.com/NoamRothschild/infinitefusion-multiplayer/blob/main/readme.md")
@@ -172,11 +161,15 @@ func _on_install_menu_pressed():
 #	FileAccess.open("user://PIF-MP_config.txt", FileAccess.WRITE).store_string(config_data + new_content)
 
 func _on_install_python_pressed():
-	OS.execute("cmd.exe", ["/C", "start", startfile, installPython])
+	OS.execute("cmd.exe", ["/C", "start", installPython])
 	PythonInstalledConfig()
 
+func InstallRedis():
+	OS.execute("cmd.exe", ["/C", "start", installRedis])
+
 func _on_install_redis_pressed():
-	openFile(installRedis)
+	var InstallRedisThread: Thread = Thread.new()
+	InstallRedisThread.start(InstallRedis)
 
 
 func _on_close_note_pressed():
@@ -189,16 +182,21 @@ func _on_close_window_pressed():
 	get_tree().quit()
 
 
+func DownloadGame():
+	OS.execute("cmd.exe", ["/C", "start", installRepo])
+
 func _on_download_game_pressed():
 	if !(FileAccess.file_exists(game_path) and FileAccess.file_exists(database_path)):
-		openFile(installRepo)
+		var InstallGameThread: Thread = Thread.new()
+		InstallGameThread.start(DownloadGame)
 	else:
 		$"InstallMenu/Download Game/Confirm".visible = true
 		$"InstallMenu/Download Game/DownloadGameNote".visible = true
 
 
 func _on_confirm_pressed():
-	openFile(installRepo)
+	var InstallGameThread: Thread = Thread.new()
+	InstallGameThread.start(DownloadGame)
 
 
 func _on_sprite_menu_pressed():
@@ -236,17 +234,21 @@ func _on_sprite_menu_pressed():
 		SpritesMenuOpen = false
 		MenuOpen = false
 
-	
-
+func DownloadSprites():
+	OS.execute("cmd.exe", ["/C", "start", "python", installType])
 
 func _on_autogen_sprites_pressed():
 	if FileAccess.file_exists(game_path):
-		openFile(installAutogen) #Game files exist
+		var InstallAutoThread: Thread = Thread.new()
+		installType = installAutogen
+		InstallAutoThread.start(DownloadSprites)
 
 
 func _on_custom_sprites_pressed():
 	if FileAccess.file_exists(game_path):
-		openFile(installCustom) #Game files exist
+		var InstallCustomThread: Thread = Thread.new()
+		installType = installCustom
+		InstallCustomThread.start(DownloadSprites)
 
 
 func _on_settings_pressed():

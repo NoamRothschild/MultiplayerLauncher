@@ -7,3 +7,4 @@ pip3 install redis
 echo Installation complete.
 endlocal
 pause
+exit

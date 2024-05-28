@@ -1,3 +1,7 @@
+from os import chdir
+from os.path import dirname, abspath, join
+chdir(join(dirname(abspath(__file__)), ".."))
+
 import os
 import shutil
 import subprocess
@@ -40,4 +44,5 @@ f = open(CONFIG_PATH, 'r').read().replace('autogen: false', 'autogen: true')
 with open(CONFIG_PATH, 'w') as config:
     config.write(f)
 
-print("Done.")
+input("Done.")
+exit()
