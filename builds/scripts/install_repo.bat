@@ -1,11 +1,18 @@
 @echo off
 set mgit="%~dp0\REQUIRED_BY_INSTALLER_UPDATER\cmd\git.exe"
 echo Current directory: %CD%
-:: git init .
-:: git remote add origin "https://github.com/NoamRothschild/infinitefusion-multiplayer.git"
-:: git fetch origin releases
-:: git reset --hard origin/releases
-%mgit% clone "https://github.com/NoamRothschild/infinitefusion-multiplayer.git"
+
+if not exist ".\infinitefusion-multiplayer" (
+    echo Cloning the repository...
+    %mgit% clone "https://github.com/NoamRothschild/infinitefusion-multiplayer.git"
+) else (
+    echo Updating the repository...
+    cd infinitefusion-multiplayer
+    %mgit% pull
+    cd ..
+)
+
+
 
 echo Done Installing Project!
 pause
