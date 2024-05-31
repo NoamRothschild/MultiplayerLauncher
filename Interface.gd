@@ -28,6 +28,7 @@ var installCustom: String = project_dir.path_join("scripts/install_custom.py")
 
 var database_path: String = project_dir.path_join("infinitefusion-multiplayer/multiplayer/redis/redis-db.py")
 var database_info_path: String = project_dir.path_join("infinitefusion-multiplayer/multiplayer/redis/db-info.txt")
+var player_num_path: String = project_dir.path_join("infinitefusion-multiplayer/multiplayer/player_num.txt")
 var game_path: String = project_dir.path_join("infinitefusion-multiplayer/Game.exe")
 var graphics_path: String = project_dir.path_join("infinitefusion-multiplayer/Graphics")
 
@@ -265,12 +266,23 @@ func _on_settings_pressed():
 		$SettingsMenu.visible = true
 		
 		var database_info = FileAccess.open(database_info_path, FileAccess.READ).get_as_text().split('\n')
-		redis_host = database_info[0].replace(" ", "").substr(6).replace("'", "")
-		redis_port = database_info[1].replace(" ", "").substr(5)
-		redis_pw = database_info[2].replace(" ", "").substr(10).replace("'", "")
+		redis_host = database_info[0].replace(" ", "").substr(6).replace("'", "").strip_edges().strip_escapes()
+		redis_port = database_info[1].replace(" ", "").substr(5).strip_edges().strip_escapes()
+		redis_pw = database_info[2].replace(" ", "").substr(10).replace("'", "").strip_edges().strip_escapes()
 		$SettingsMenu/Host.text = redis_host
 		$SettingsMenu/Port.text = redis_port
 		$SettingsMenu/Password.text = redis_pw
+		
+		var player_num_info = FileAccess.open(player_num_path, FileAccess.READ).get_as_text().strip_edges().strip_escapes()
+		print("player number: '", player_num_info, "'")
+		var check_button = get_node("SettingsMenu/PlayerNumButton") as CheckButton
+		if player_num_info == "1":
+			check_button.set_pressed(false)
+		elif player_num_info == "2":
+			check_button.set_pressed(true)
+		else:
+			print("Error getting player number from file, setting 1 as deafult.")
+			check_button.set_pressed(false)
 	else:
 		$SettingsMenu.visible = false
 		SettingsMenuOpen = false
@@ -280,11 +292,11 @@ func _on_settings_pressed():
 func _on_open_redis_pressed():
 	OS.shell_open("https://redis.io/try-free/")
 func _on_host_text_changed(new_text):
-	redis_host = new_text
+	redis_host = new_text.strip_edges().strip_escapes()
 func _on_port_text_changed(new_text):
-	redis_port = new_text
+	redis_port = new_text.strip_edges().strip_escapes()
 func _on_password_text_changed(new_text):
-	redis_pw = new_text
+	redis_pw = new_text.strip_edges().strip_escapes()
 
 
 func _on_apply_pressed():
@@ -294,7 +306,17 @@ func _on_apply_pressed():
 	var port_line = "port = " + redis_port
 	var pw_line = "password = '" + redis_pw + "'"
 	database_info.store_string(host_line + '\n' + port_line + '\n' + pw_line)
-	$TopNote.text = "Saved changes to database!"
+	
+	var f_player_num = FileAccess.open(player_num_path, FileAccess.WRITE)
+	var check_button = get_node("SettingsMenu/PlayerNumButton") as CheckButton
+	if !check_button.is_pressed():
+		print("Player num set to 1!")
+		f_player_num.store_string("1")
+	else:
+		print("Player num set to 2!")
+		f_player_num.store_string("2")
+	
+	$TopNote.text = "Saved changes to database & player number!"
 	$TopNote.visible = true
 	$TopNote/Timer.start()
 	MenuOpen = false
