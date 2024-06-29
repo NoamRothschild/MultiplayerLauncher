@@ -1,8 +1,8 @@
 extends Control
 
 #FIXME: SWITCH THOSE # LINES WHEN SWITCHING BETWEEN DEVELOPING & EXPORTING
-var project_dir = OS.get_executable_path().get_base_dir()
-#var project_dir = "PATH/TO/PROJECT/builds"
+var project_dir = OS.get_executable_path().get_base_dir() #Deafult path, used in production
+#var project_dir = "PATH/TO/PROJECT/builds" #Debug path, used for experimenting with new features
 #var project_dir = "D:/Program-Files/InfusionCopies/MultiplayerProject/MultiplayerLauncher/builds"
 
 var MenuOpen: bool = false
@@ -48,10 +48,13 @@ func _ready():
 
 
 func OpenGame():
-	OS.execute("cmd.exe", ["/C", game_path])
+	OS.execute("cmd.exe", ["/C", 'start "" cmd.exe /C "' + game_path + '"'])
 	
 func OpenServer():
-	OS.execute("cmd.exe", ["/C", "start", "python", database_path])
+	#print("Executing ", "cmd.exe", ["/C", 'start python "' + database_path + '"'])
+	#print("DEBUG DATABASEPATH: ", 'start "" cmd.exe /C python "' + database_path + '"')
+	OS.execute("cmd.exe", ["/C", 'start "" cmd.exe /C python "' + database_path + '"'])
+
 
 func _on_launch_game_pressed():
 	if FileAccess.file_exists(game_path):
@@ -79,7 +82,8 @@ func _on_start_server_pressed():
 
 func PythonInstalledConfig():
 	#print("Checking if python is installed...")
-	var exit_code = OS.execute("cmd.exe", ["/C", pythonInstalled])
+	#print("Executing ", "cmd.exe", ["/C", '"' + pythonInstalled + '"'])
+	var exit_code = OS.execute("cmd.exe", ["/C", '"' + pythonInstalled + '"'])
 	#print("Exit code:", exit_code)
 	if exit_code == 1:
 		print("Python is not installed")
@@ -99,7 +103,7 @@ func PythonInstalledConfig():
 		return false
 
 func RedisInstalledConfig():
-	OS.execute("cmd.exe", ["/C", "start", "/min", "python", redisInstalled])
+	OS.execute("cmd.exe", ["/C", 'start /min "" cmd.exe /C python "' + redisInstalled + '"'])
 	
 	var config_data = FileAccess.open(configFile, FileAccess.READ).get_as_text()
 	if "redis: true" in config_data:
@@ -162,11 +166,13 @@ func _on_install_menu_pressed():
 #	FileAccess.open("user://PIF-MP_config.txt", FileAccess.WRITE).store_string(config_data + new_content)
 
 func _on_install_python_pressed():
-	OS.execute("cmd.exe", ["/C", "start", installPython])
+	#print("Executing ", "cmd.exe", ["/C", 'start "' + installPython + '"'])
+	OS.execute("cmd.exe", ["/C", 'start "" cmd.exe /C "' + installPython + '"'])
 	PythonInstalledConfig()
 
 func InstallRedis():
-	OS.execute("cmd.exe", ["/C", "start", installRedis])
+	#print("Executing ", "cmd.exe", ["/C", 'start "' + installRedis + '"'])
+	OS.execute("cmd.exe", ["/C", 'start "" cmd.exe /C "' + installRedis + '"'])
 
 func _on_install_redis_pressed():
 	var InstallRedisThread: Thread = Thread.new()
@@ -184,7 +190,7 @@ func _on_close_window_pressed():
 
 
 func DownloadGame():
-	OS.execute("cmd.exe", ["/C", "start", installRepo])
+	OS.execute("cmd.exe", ["/C", 'start "" cmd.exe /C "' + installRepo + '"'])
 
 func _on_download_game_pressed():
 	if !(FileAccess.file_exists(game_path) and FileAccess.file_exists(database_path)):
@@ -236,7 +242,10 @@ func _on_sprite_menu_pressed():
 		MenuOpen = false
 
 func DownloadSprites():
-	OS.execute("cmd.exe", ["/C", "start", "python", installType])
+	#print("Executing ", "cmd.exe", ["/C", 'start python "' + installType + '"'])
+	#print("DEBUG SPRITES ", 'start "" cmd.exe /C python ' + installType)
+	OS.execute("cmd.exe", ["/C", 'start "" cmd.exe /C python "' + installType + '"'])
+
 
 func _on_autogen_sprites_pressed():
 	if FileAccess.file_exists(game_path):
@@ -343,3 +352,7 @@ func _on_close_install_menu_pressed():
 	MenuOpen = false
 	InstallMenuOpen = false
 	$InstallMenu.visible = false
+
+
+func _on_tutorial_pressed():
+	pass # Replace with function body.
