@@ -2,11 +2,17 @@
 
 An easy to install launcher for my [PIF Multiplayer project](https://github.com/NoamRothschild/infinitefusion-multiplayer)
 
+For any help please join the [Kuray Hub Discord](https://discord.com/invite/kuray-hub-1121345297352753243) and submit a new error post inside #multiplayer-help
+
 ![MultiplayerLauncher(PIF)](https://github.com/NoamRothschild/MultiplayerLauncher/assets/98104540/ee687fd7-4f34-4011-adf1-7fef7b50ed7f)
 
 This launcher will save you from all of the troubles when installing my [Multiplayer Extension](https://github.com/NoamRothschild/infinitefusion-multiplayer), not only making the installing process faster, but also simpler.
 
 ## How to install:
+
+[### You can reffer to this link that will guide you on the installation
+or follow the instructions bellow.
+](https://www.youtube.com/watch?v=HSdJekd5UsY)
 - Go to the [releases tab](https://github.com/NoamRothschild/MultiplayerLauncher/releases) and install the latest PIF-MultiplayerLauncher.zip
 - After done installing, extract & open up PIF-MultiplayerLauncher.exe
   
@@ -45,9 +51,17 @@ Unfortunately, you will need to do 1 more step that cannot be automated.
 ### **All of the following steps must be repeated on each gaming session, including the last ones:**
 
 - all you need to do right now is start up the game & the server. this may take some time on your first launch.
+- Note: if the server says 'Multiplayer Server Loaded!', congrats! you didnt screw up ;)
 - After the game was opened and a save was entered, go inside the game settings (in game) and set your player number
 - Select the same player number you selected in the settings before and exit (if already selected you can close without doing nothing)
 - You are done! just make sure to close and open both the server and the game each time you play.
+
+- **To clarify what each player needs to do:**
+
+| Setting | Player 1 | Player 2 |
+|----------|----------|----------|
+| Launcher setting    | button is off (left)  | button is on (right)   |
+| In-Game setting    | set to number 1 (left)   | set to number 2 (right)   |
   
 # Have fun!
 
