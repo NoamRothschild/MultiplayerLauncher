@@ -1,3 +1,0 @@
-redis: true
-autogen: false
-custom: false
