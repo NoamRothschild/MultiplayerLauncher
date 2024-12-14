@@ -8,8 +8,8 @@ This launcher attempts to simplify the process of installing and managing [Kuray
 
 ## How to install:
 
-1. Head to the [releases tab](https://github.com/NoamRothschild/MultiplayerLauncher/releases) and download the latest "Kuray-Infinite-Fusion-Launcher.zip".
-2. Extract the zip file and open **Kuray-Infinite-Fusion-Launcher.exe**.
+1. Head to the [releases tab](https://github.com/NoamRothschild/MultiplayerLauncher/releases) and download the latest installer "KurayFusionLauncherSetup.exe".
+2. Open the file and follow the wizard
 
 If you see a Microsoft Defender SmartScreen warning when opening the app, follow these steps:
 1. Click on "More info" in the warning dialog.
