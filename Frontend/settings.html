@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fusion Launcher</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>
+    <div class="pywebview-drag-region">
+        <img src="{{ url_for('static', filename='Icons/logo.png') }}" alt="Logo" width="20px" height="20px">
+        <p>Kuray Infinite Fusion Launcher</p>
+
+        <button onclick='pywebview.api.closeWin()' id="close">
+            <img src="{{ url_for('static', filename='Icons/close.png') }}" alt="right" width="15px" height="15px">
+        </button>
+        <button onclick='pywebview.api.minWin()' id="minimize">
+            <img src="{{ url_for('static', filename='Icons/minimize.png') }}" alt="right" width="15px" height="15px">
+        </button>
+    </div>
+
+    <div id="right-shadow"></div>
+    <div class="links right-pad">
+        <a href="https://www.kurayinfinitefusion.com/" target="_blank">
+            <img src="{{ url_for('static', filename='Icons/website.png') }}" alt="website" width="32px" height="32px">
+        </a>
+        <a href="https://discord.gg/kuray-hub-1121345297352753243" target="_blank">
+            <img src="{{ url_for('static', filename='Icons/discord.png') }}" alt="discord" width="32px" height="32px">
+        </a>
+        <a href="https://github.com/kurayamiblackheart/kurayshinyrevamp" target="_blank">
+            <img src="{{ url_for('static', filename='Icons/github.png') }}" alt="github" width="32px" height="32px">
+        </a>
+        <a href="https://www.reddit.com/r/kurayhub/" target="_blank">
+            <img src="{{ url_for('static', filename='Icons/reddit.png') }}" alt="reddit" width="32px" height="32px">            
+        </a>
+    </div>
+
+    <div class="select-menu">
+        <br>
+        <a href="/">Back</a>
+
+        <h3 class="category-header">Launcher</h3>
+        <li>
+            <button onclick="pywebview.api.settings.game_dir()" >Game directory</button>
+        </li>
+
+        <h3 class="category-header">Game</h3>
+        <li>
+            <button onclick="pywebview.api.settings.start_menu()" >Start Menu</button>
+        </li>
+        <li>
+            <button onclick="pywebview.api.settings.pause_menu()" >Pause Menu</button>
+        </li>
+
+        <h3 class="category-header">Multiplayer</h3>
+        <li>
+            <button onclick="pywebview.api.settings.multiplayer_config()" >Config</button>
+        </li>
+    </div>
+
+    <h1 id="option-title">
+        Info - About the settings
+    </h1>
+
+    <div id="options">
+        <h2 class="category-header">About the settings...</h2>
+        <p>This section of the launcher provides you with the ability to modify core features of the game.</p>
+        <h2><b>Proceed with caution!</b></h2>
+        <p><b>Settings changed here may or may not harm progression, lock core features, or even soft-lock. please don't mess around with everything.</b></p>
+        <p>Multiplayer section is also here, but support for multiplayer in-game will release later these months.</p>
+    </div>
+
+    <button id="apply-button" onclick="pywebview.api.settings.apply()">APPLY</button>
+</body>
+</html>

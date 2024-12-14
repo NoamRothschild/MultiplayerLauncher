@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fusion Launcher</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+
+</head>
+<body>
+    <!-- Title bar -->
+    <div class="pywebview-drag-region">
+        <img src="{{ url_for('static', filename='Icons/logo.png') }}" alt="Logo" width="20px" height="20px">
+        <p>Kuray Infinite Fusion Launcher</p>
+
+        <button onclick='pywebview.api.closeWin()' id="close">
+            <img src="{{ url_for('static', filename='Icons/close.png') }}" alt="right" width="15px" height="15px">
+        </button>
+        <button onclick='pywebview.api.minWin()' id="minimize">
+            <img src="{{ url_for('static', filename='Icons/minimize.png') }}" alt="right" width="15px" height="15px">
+        </button>
+    </div>
+
+    <img src="{{ url_for('static', filename='Icons/logo.png') }}" alt="Logo" width="75vh" height="75vh" id="logo">
+    <h1 id="title">Kuray Infinite Fusion</h1>
+
+    <!-- Outside Links -->
+    <div id="right-shadow"></div>
+    <div class="links right-pad">
+        <a href="https://www.kurayinfinitefusion.com/" target="_blank">
+            <img src="{{ url_for('static', filename='Icons/website.png') }}" alt="website" width="32px" height="32px">
+        </a>
+        <a href="https://discord.gg/kuray-hub-1121345297352753243" target="_blank">
+            <img src="{{ url_for('static', filename='Icons/discord.png') }}" alt="discord" width="32px" height="32px">
+        </a>
+        <a href="https://github.com/kurayamiblackheart/kurayshinyrevamp" target="_blank">
+            <img src="{{ url_for('static', filename='Icons/github.png') }}" alt="github" width="32px" height="32px">
+        </a>
+        <a href="https://www.reddit.com/r/kurayhub/" target="_blank">
+            <img src="{{ url_for('static', filename='Icons/reddit.png') }}" alt="reddit" width="32px" height="32px">            
+        </a>
+    </div>
+
+    <!-- Bottom section -->
+    <div class="bottom-section">
+        <div class="links">
+            <button onclick="pywebview.api.game.open_settings();">
+                <img src="{{ url_for('static', filename='Icons/settings.png') }}" alt="settings" width="48px" height="48px">
+            </button>
+            <button  onclick="pywebview.api.game.open_features();">
+                <img src="{{ url_for('static', filename='Icons/features.png') }}" alt="features" width="48px" height="48px">
+            </button>
+            <button onclick="pywebview.api.game.open_folder();">
+                <img src="{{ url_for('static', filename='Icons/openFolder.png') }}" alt="openFolder" width="48px" height="48px">
+            </button>
+        </div>
+
+        <p>An open-source launcher for the open-source fangame Kuray Infinite Fusion. It features customizable options, revamped AI, mod support, custom shinies & Multiplayer (SOON). Join the Kuray Hub Discord for more information</p>
+    </div>
+
+    <!-- Play buttons -->
+    <div class="play-menu">
+        <button onclick="pywebview.api.game.game_state('main');" id="play-button">Play</button>
+        <button onclick="pywebview.api.game.game_state('extra');" id="Extra-info">Fetch version</button>
+    </div>
+
+    <!-- Moving images box -->
+    <div class="image-display">
+        <img id="displayed-image" src="{{ url_for('static', filename='Image-Display/image1.png') }}" alt="" width="95%" height="95%">
+    </div>
+    <button class="arrow" onclick="moveImage(1)">
+        <img src="{{ url_for('static', filename='Icons/next.png') }}" alt="right" width="48px" height="48px">
+    </button>
+    <button class="arrow left" onclick="moveImage(-1)">
+        <img src="{{ url_for('static', filename='Icons/next.png') }}" alt="right" width="48px" height="48px">
+    </button>
+</body>
+</html>
