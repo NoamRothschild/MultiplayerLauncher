@@ -9,7 +9,7 @@ from game_settings import GameSettings, GameOption
 
 from flask import Flask, render_template, send_file
 import webview
-from subprocess import run, Popen, PIPE
+from subprocess import run, Popen, PIPE, CREATE_NO_WINDOW
 import json
 from shutil import rmtree
 
@@ -55,7 +55,7 @@ class API():
         MAIN_WIN.minimize()
     
     def git_exists():
-        return run([GIT_PATH, '--version'], stdout=PIPE, stderr=PIPE, text=True).returncode == 0
+        return run([GIT_PATH, '--version'], stdout=PIPE, stderr=PIPE, text=True, creationflags=CREATE_NO_WINDOW).returncode == 0
 
     
     def log(self, value):
@@ -193,7 +193,7 @@ class API():
             if not exists(CONFIG.get("Game-Path", '')):
                 MAIN_WIN.create_confirmation_dialog("Failed to open folder", "Game not installed!\nPlease Install Game.")
                 return
-            Popen('explorer "{}"'.format(CONFIG["Game-Path"]))
+            Popen('explorer "{}"'.format(CONFIG["Game-Path"]), creationflags=CREATE_NO_WINDOW)
 
         @classmethod
         def open_features(self):
@@ -243,9 +243,9 @@ class API():
                 extra_data_button.attributes['onclick'] = ''
                 return
             
-            run(f"{GIT_PATH} fetch origin release".split(' '), capture_output=True, text=True, cwd=game_path)
-            hash1 = run(f"{GIT_PATH} rev-parse origin/release".split(' '), capture_output=True, text=True, cwd=game_path).stdout
-            hash2 = run(f"{GIT_PATH} rev-parse HEAD".split(' '), capture_output=True, text=True, cwd=game_path).stdout
+            run(f"{GIT_PATH} fetch origin release".split(' '), capture_output=True, text=True, cwd=game_path, creationflags=CREATE_NO_WINDOW)
+            hash1 = run(f"{GIT_PATH} rev-parse origin/release".split(' '), capture_output=True, text=True, cwd=game_path, creationflags=CREATE_NO_WINDOW).stdout
+            hash2 = run(f"{GIT_PATH} rev-parse HEAD".split(' '), capture_output=True, text=True, cwd=game_path, creationflags=CREATE_NO_WINDOW).stdout
 
             if hash1 != hash2:
                 button.text = "New game update"
@@ -278,7 +278,8 @@ class API():
         def launch(self):
             global CONFIG
             print("Launching game!")
-            Popen(join(CONFIG["Game-Path"], 'Game.exe'))
+            cmd = '"' + join(CONFIG["Game-Path"], 'Game.exe') + '"'
+            Popen(cmd, creationflags=CREATE_NO_WINDOW)
             API.closeWin(self)
         
         @classmethod
@@ -298,7 +299,7 @@ class API():
                 extra_data_button.attributes['onclick'] = ''
                 return
             
-            run(f"{GIT_PATH} reset --hard origin/release".split(' '), cwd=CONFIG["Game-Path"])
+            run(f"{GIT_PATH} reset --hard origin/release".split(' '), cwd=CONFIG["Game-Path"], creationflags=CREATE_NO_WINDOW)
             extra_data_button.text = "Up to date!"
             button.text = "Play"
             button.attributes['onclick'] = 'pywebview.api.game.game_state();'
@@ -327,13 +328,13 @@ class API():
 
             extra_data_button.text = 'Initializing git'
             makedirs('./GameFiles')
-            run(f'{GIT_PATH} init .', cwd='./GameFiles')
+            run(f'{GIT_PATH} init .', cwd='./GameFiles', creationflags=CREATE_NO_WINDOW)
             extra_data_button.text = 'Adding origin...'
-            run(f'{GIT_PATH} remote add origin https://github.com/kurayamiblackheart/kurayshinyrevamp.git', cwd='./GameFiles')
+            run(f'{GIT_PATH} remote add origin https://github.com/kurayamiblackheart/kurayshinyrevamp.git', cwd='./GameFiles', creationflags=CREATE_NO_WINDOW)
             extra_data_button.text = 'fetching latest release'
-            run(f'{GIT_PATH} fetch origin release', cwd='./GameFiles')
+            run(f'{GIT_PATH} fetch origin release', cwd='./GameFiles', creationflags=CREATE_NO_WINDOW)
             extra_data_button.text = 'placing files...'
-            run(f'{GIT_PATH} reset --hard origin/release', cwd='./GameFiles')
+            run(f'{GIT_PATH} reset --hard origin/release', cwd='./GameFiles', creationflags=CREATE_NO_WINDOW)
 
             global CONFIG
             CONFIG["Game-Path"] = join(getcwd(), 'GameFiles')
