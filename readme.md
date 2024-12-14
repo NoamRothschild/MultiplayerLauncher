@@ -2,7 +2,7 @@
 
 An easy-to-use launcher for [Kuray Infinite Fusion](https://github.com/kurayamiblackheart/kurayshinyrevamp).
 
-![Kuray Infinite Fusion Launcher](images\launcher.png)
+![Kuray Infinite Fusion Launcher](images/launcher.png)
 
 This launcher attempts to simplify the process of installing and managing [Kuray Infinite Fusion](https://github.com/kurayamiblackheart/kurayshinyrevamp). It makes the installation process faster, simpler, and more user-friendly.
 
@@ -27,9 +27,9 @@ The Microsoft Defender SmartScreen message appears because the app is not recogn
 - Changing game directory
 - Configure game's start menu buttons
 - Configure game's pause menu buttons
-![Game pause menu settings](images\settings-pause-menu.png)
+![Game pause menu settings](images/settings-pause-menu.png)
 - Configure multiplayer settings
-![Multiplayer config menu](images\settings-multiplayer-config.png)
+![Multiplayer config menu](images/settings-multiplayer-config.png)
 
 ### About Multiplayer
 Multiplayer is currently not supported 100%. Features will be pushed after PIF's big update.
